@@ -1,4 +1,4 @@
 demoddix
 ========
 
-Debugger for Model-Driven Distributed Communication Systems
+debugger for model-driven distributed communication systems
