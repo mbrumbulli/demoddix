@@ -46,5 +46,27 @@ Usage
 
 To run the example provided with this distribution: `./demoddix example/config.ini example/clientserver`  
 
+Left = Forward  
+Right = Rewind  
+Up = Next  
+Down = Previous  
+Page Up = Increment Step  
+Page Down = Decrement Step  
+r = Reset  
+p = Pause MscTracer
+
+Ctrl + Mouse Left on *node* = Open MscTracer  
+Mouse Move while holding Left = Move View  
+Mouse Wheel = Zoom
+
+Mouse Left on *state* or *message* = Open Color Chooser  
+Mouse Left on Color Chooser = Select Color and Close Color Chooser  
+Mouse Right on Color Chooser = Close Color Chooser  
+Ctrl + Mouse Left on *state* = Increment Priority  
+Ctrl + Mouse Right on *state* = Decrement Priority  
+Ctrl + Mouse Left on *message* = Show / Hide  
+
+
+
 
 
