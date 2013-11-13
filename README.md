@@ -3,7 +3,7 @@ Introduction
 
 **demoddix** is the **de**bugger for **moddix**.  
 **moddix** is a methodology and tool support for **mo**del-**d**riven development of 
-**di**stributed **c**ommunication **s**ystems based on [SDL-RT](http://www.sdl-rt.org).  
+**di**stributed **c**ommunication **s**ystems based on [SDL-RT](http://www.sdl-rt.org).
 Tool support is provided as a profile for [RTDS](http://www.pragmadev.com/product/modeling.html), 
 which can generate code for Linux, [ns-3](http://www.nsnam.org), and [OdemX](http://sourceforge.net/projects/odemx/).
 
