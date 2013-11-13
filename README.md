@@ -1,8 +1,9 @@
 demoddix
 ========
 
-**demoddix** is an animation and visualization tool for debugging distributed communication systems.  
-Debugging is based on a set of XML traces of events generated during system runtime.
+The **De**bugger for **Mo**del-**D**riven **Di**stributed **C**ommunication **S**ystems is an animation 
+and visualization tool build in C++ / OpenGL.
+It uses a set of XML traces of events generated during system runtime.
 
 
 Two groups of events can be visualized with **demoddix**:  
@@ -11,7 +12,7 @@ Two groups of events can be visualized with **demoddix**:
   * packet sent,
   * packet received,
   * packet lost, and
-  * state change.
+  * node state change.
   
 2. Node
   * task creation and deletion,
@@ -19,6 +20,8 @@ Two groups of events can be visualized with **demoddix**:
   * message sent, received and saved,
   * timer start, cancel, and timeout,
   * semaphore creation and deletion,
-  * semaphore take, success, timeout, and give.
+  * semaphore take attempt, take success, take timeout, and give.
 
 Network events are directly displayed in **demoddix**, instead Node events are forwarded to [MscTracer](http://www.pragmadev.com/product/tracing.html) for visualization.
+
+![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/demoddix.gif "demoddix example - msctracer node 0")
