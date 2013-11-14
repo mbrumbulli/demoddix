@@ -64,7 +64,10 @@ Mouse Left on Color Chooser = Select Color and Close Color Chooser
 Mouse Right on Color Chooser = Close Color Chooser  
 Ctrl + Mouse Left on *state* = Increment Priority  
 Ctrl + Mouse Right on *state* = Decrement Priority  
-Ctrl + Mouse Left on *message* = Show / Hide  
+Ctrl + Mouse Left on *message* = Show / Hide
+
+For performance reasons **demoddix** does not do any validation of the trace files against the schema. Nevertheless, it
+is advised to do such validation prior to running **demoddix**. To do so avalailable tools like [xmllint](http://xmlsoft.org/xmllint.html) can be used.
 
 
 
