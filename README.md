@@ -44,7 +44,7 @@ Run `make` to build.
 Usage
 ------
 
-To run the example provided with this distribution: `./demoddix example/config.ini example/clientserver`  
+To run the example provided with this distribution: `./demoddix example/*.xml`  
 
 **Left** = Forward  
 **Right** = Rewind  
