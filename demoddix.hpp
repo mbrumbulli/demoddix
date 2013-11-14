@@ -130,7 +130,6 @@ public:
 	static bool Back(const Event& e, const char* buffer);
 	
 	static const unsigned int bufferSize;
-	static FILE* iniFile;
 	
 	static std::vector<State> stateList;
 	static std::vector<Process> processList;

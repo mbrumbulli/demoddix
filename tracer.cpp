@@ -79,7 +79,7 @@ void Tracer::Launch(unsigned long id)
 {
 	// tracer is still show
 	if (Tracer::tracerList[id].status() != Tracer::IDLE) {
-		std::cerr << "Tracer with id = " << id << " is still show!" << std::endl;
+		std::cerr << "Warning: tracer on node " << id << " is still running." << std::endl;
 		return;
 	}
 	
@@ -135,7 +135,7 @@ void Tracer::Launch(unsigned long id)
 	}
 	
 	if (p == 0) {
-		std::cerr << "No free ports available for tracer with id = " << id << "!" << std::endl;
+		std::cerr << "Warning: no free port for tracer on node " << id << "." << std::endl;
 		return;
 	}
 	
@@ -290,7 +290,7 @@ void Tracer::Send(const char* buffer)
 		return;
 	}
 	
-	// if send fails, then close socket 
+	// close socket if send fails 
 	if (write(Tracer::tracerList[p2pId].sock(), command, strlen(command)) < 0) {
 		close(Tracer::tracerList[p2pId].sock());
 		Tracer::tracerList[p2pId].sock(-1);

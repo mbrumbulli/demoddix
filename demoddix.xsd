@@ -3,6 +3,54 @@
 	<xs:element name="demoddix">
 		<xs:complexType>
 			<xs:choice maxOccurs="unbounded">
+				<xs:element name="state">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="id" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:ID">
+									<xs:pattern value="s\d+" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="process">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="id" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:ID">
+									<xs:pattern value="p\d+" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="semaphore">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="id" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:ID">
+									<xs:pattern value="x\d+" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="message">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="id" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:ID">
+									<xs:pattern value="m\d+" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="nodeChangedState">
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
@@ -15,14 +63,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="stateName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="s\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="prevStateName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="s\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -33,7 +81,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -48,7 +96,7 @@
 						</xs:attribute>
 						<xs:attribute name="pktName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -59,7 +107,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -74,7 +122,7 @@
 						</xs:attribute>
 						<xs:attribute name="pktName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -85,7 +133,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -100,7 +148,7 @@
 						</xs:attribute>
 						<xs:attribute name="pktName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -111,7 +159,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -120,14 +168,14 @@
 						<xs:attribute name="creatorId" type="xs:unsignedInt" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="creatorName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -139,7 +187,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -147,7 +195,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -159,7 +207,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -167,7 +215,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -177,7 +225,7 @@
 						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 						<xs:attribute name="msgName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -188,7 +236,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -196,7 +244,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -206,7 +254,7 @@
 						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 						<xs:attribute name="msgName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -217,7 +265,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -225,7 +273,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -235,7 +283,7 @@
 						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 						<xs:attribute name="msgName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -246,7 +294,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -254,7 +302,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="semName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="x\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -267,7 +315,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -275,7 +323,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -304,14 +352,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="semName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="x\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -325,7 +373,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -333,14 +381,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="semName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="x\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -353,7 +401,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -361,14 +409,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="semName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="x\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -389,14 +437,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="timerName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -410,7 +458,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -418,14 +466,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="timerName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -438,7 +486,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -446,14 +494,14 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="timerName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="m\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -466,7 +514,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -474,7 +522,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -482,7 +530,7 @@
 						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
 						<xs:attribute name="stateName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="s\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -493,7 +541,7 @@
 					<xs:complexType>
 						<xs:attribute name="p2pId" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="n\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -501,7 +549,7 @@
 						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
 						<xs:attribute name="pName" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
+								<xs:restriction base="xs:IDREF">
 									<xs:pattern value="p\d+" />
 								</xs:restriction>
 							</xs:simpleType>
@@ -511,9 +559,10 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
+			<xs:attribute name="name" type="xs:string" use="required" />
 			<xs:attribute name="p2pId" use="required">
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
+					<xs:restriction base="xs:ID">
 						<xs:pattern value="n\d+" />
 					</xs:restriction>
 				</xs:simpleType>

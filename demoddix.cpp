@@ -25,7 +25,6 @@
 #include "demoddix.hpp"
 
 const unsigned int Demoddix::bufferSize 			= 1024; // buffer size for reading
-FILE* Demoddix::iniFile								= NULL; // configuration file containing list of states, processes, semaphores, and messages
 
 std::vector<State> Demoddix::stateList				= {}; // list of states found in iniFile
 std::vector<Process> Demoddix::processList			= {}; // list of processes found in iniFile 
@@ -43,13 +42,14 @@ unsigned long long Demoddix::endTime				= 0; // end time in ns
 unsigned long long Demoddix::stepTime				= 1000000; // time to step forward (or rewind) in ns
 
 // format for reading values from iniFile
-static const char* stateF		= "%s = %u";
-static const char* processF		= "%s = %u";
-static const char* semaphoreF	= "%s = %u";
-static const char* messageF		= "%s = %u";
+
 
 // format for reading values from trace files
-static const char* nodeF				= "<demoddix p2pId=\"n%lu\" x=\"%lf\" y=\"%lf\" >";
+static const char* nodeF				= "<demoddix name=\"%[^\"]\" p2pId=\"n%lu\" x=\"%lf\" y=\"%lf\">";
+static const char* stateF				= "<state id=\"s%lu\" name=\"%[^\"]\" />";
+static const char* processF				= "<process id=\"p%lu\" name=\"%[^\"]\" />";
+static const char* semaphoreF			= "<semaphore id=\"x%lu\" name=\"%[^\"]\" />";
+static const char* messageF				= "<message id=\"m%lu\" name=\"%[^\"]\" />";
 static const char* traceF				= "<%*s p2pId=\"n%lu\" time=\"%llu\"";
 static const char* nodeChangedStateF	= "<nodeChangedState p2pId=\"n%lu\" time=\"%llu\" stateName=\"s%u\" prevStateName=\"s%u\" />";
 static const char* packetSentF			= "<packetSent p2pId=\"n%lu\" time=\"%llu\" p2pReceiver=\"n%lu\" pktName=\"m%u\" />";
@@ -61,47 +61,8 @@ void Demoddix::Open()
 {
 	char buffer[Demoddix::bufferSize];
 	
-	// read iniFile and fill corresponding lists
-	// colors for states and messages are randomly generated [0, 104)
-	while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL) {
-		unsigned int id;
-		char name[128];
-		if (strstr(buffer, "[States]") != NULL) {
-			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, stateF, name, &id) == 2) {
-				if (Demoddix::stateList.size() < id + 1) {
-					Demoddix::stateList.resize(id + 1, State(std::string(""), 0, 0));
-				}
-				Demoddix::stateList[id] = State(std::string(name), rand() % 104, 1);
-			}
-		}
-		else if (strstr(buffer, "[Processes]") != NULL) {
-			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, processF, name, &id) == 2) {
-				if (Demoddix::processList.size() < id + 1) {
-					Demoddix::processList.resize(id + 1, Process(std::string("")));
-				}
-				Demoddix::processList[id] = Process(std::string(name));
-			}
-		}
-		else if (strstr(buffer, "[Semaphores]") != NULL) {
-			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, semaphoreF, name, &id) == 2) {
-				if (Demoddix::semaphoreList.size() < id + 1) {
-					Demoddix::semaphoreList.resize(id + 1, Semaphore(std::string("")));
-				}
-				Demoddix::semaphoreList[id] = Semaphore(std::string(name));
-			}
-		}
-		else if (strstr(buffer, "[Messages]") != NULL) {
-			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, messageF, name, &id) == 2) {
-				if (Demoddix::messageList.size() < id + 1) {
-					Demoddix::messageList.resize(id + 1, Message(std::string(""), 0));
-				}
-				Demoddix::messageList[id] = Message(std::string(name), rand() % 104);
-			}
-		}
-	}
-	
-	// read trace files and fill event lists
-	// calculate min & max coordinates needed for transformation
+	// read trace files and fill lists
+	// calculate min & max node coordinates needed for transformation
 	double xMin = DBL_MAX, yMin = DBL_MAX, xMax = DBL_MIN, yMax = DBL_MIN;
 	for (auto& n: Demoddix::nodeList) {
 		if (n.fp != NULL) {
@@ -109,9 +70,34 @@ void Demoddix::Open()
 			fgetpos(n.fp, &pos);
 			unsigned long id;
 			unsigned long long time;
+			char name[256];
 			while (fgets(buffer, Demoddix::bufferSize, n.fp) != NULL) {
 				if (sscanf(buffer, traceF, &id, &time) == 2) {
 					Demoddix::eventList.push_back(Event(time, id, pos));
+				}
+				else if(sscanf(buffer, stateF, &id, name) == 2) {
+					if (Demoddix::stateList.size() < id + 1) {
+						Demoddix::stateList.resize(id + 1, State(std::string(""), 0, 0));
+					}
+					Demoddix::stateList[id] = State(std::string(name), rand() % 104, 1);
+				}
+				else if(sscanf(buffer, processF, &id, name) == 2) {
+					if (Demoddix::processList.size() < id + 1) {
+						Demoddix::processList.resize(id + 1, Process(std::string("")));
+					}
+					Demoddix::processList[id] = Process(std::string(name));
+				}
+				else if(sscanf(buffer, semaphoreF, &id, name) == 2) {
+					if (Demoddix::semaphoreList.size() < id + 1) {
+						Demoddix::semaphoreList.resize(id + 1, Semaphore(std::string("")));
+					}
+					Demoddix::semaphoreList[id] = Semaphore(std::string(name));
+				}
+				else if(sscanf(buffer, messageF, &id, name) == 2) {
+					if (Demoddix::messageList.size() < id + 1) {
+						Demoddix::messageList.resize(id + 1, Message(std::string(""), 0));
+					}
+					Demoddix::messageList[id] = Message(std::string(name), rand() % 104);
 				}
 				fgetpos(n.fp, &pos);
 			}
@@ -145,11 +131,6 @@ void Demoddix::Open()
 // close files
 void Demoddix::Close() 
 {	
-	// close iniFile
-	if (Demoddix::iniFile != NULL) {
-		fclose(Demoddix::iniFile);
-	}
-	
 	// close trace files
 	for (auto& n: Demoddix::nodeList) {
 		if (n.fp != NULL) {
@@ -339,28 +320,30 @@ bool Demoddix::Back(const Event& e, const char* buffer)
 
 int main(int argc, char **argv) 
 {
-	if (argc < 3) {
-		std::cerr << "Usage: " << argv[0] << " [configuration-file]" << " [trace-file(s)]"  << std::endl;
+	if (argc < 2) {
+		std::cerr << "Usage: " << argv[0] << " <trace-file(s)>"  << std::endl;
 		return 1;
 	}
 	
-	Demoddix::iniFile = fopen(argv[1], "r");
-	if (Demoddix::iniFile == NULL) {
-		std::cerr << "Cannot find configuration file " << argv[1] << "!" << std::endl;
-		return 1;
-	}
-	
-	// scan trace files and fill node list
-	for (int i = 2; i < argc; ++i) {
+	// read trace files and fill node list
+	char buffer[Demoddix::bufferSize];
+	for (int i = 1; i < argc; ++i) {
 		if (std::string(argv[i]).find(".xml") != std::string::npos) {
 			FILE* fp = fopen(argv[i], "r");
 			if (fp != NULL) {
 				bool ok = false;
+				char name[256];
 				unsigned long id;
 				double x, y;
-				char buffer[Demoddix::bufferSize];
 				while (fgets(buffer, Demoddix::bufferSize, fp) != NULL) {
-					if (sscanf(buffer, nodeF, &id, &x, &y) == 3) {
+					if (sscanf(buffer, nodeF, name, &id, &x, &y) == 4) {
+						static const std::string s(name);
+						if (s != std::string(name)) {
+							std::cerr << "Error: the trace file(s) are not from the same program." << std::endl;
+							fclose(fp);
+							Demoddix::Close();
+							return 1;
+						}
 						if (Demoddix::nodeList.size() < id + 1) {
 							Demoddix::nodeList.resize(id + 1, Node(0, 0, 0, NULL));
 						}
@@ -376,8 +359,7 @@ int main(int argc, char **argv)
 		}
 	}
 	if (Demoddix::nodeList.empty()) {
-		std::cerr << "No trace files found!" << std::endl;
-		fclose(Demoddix::iniFile);
+		std::cerr << "Error: no nodes found in trace file(s)." << std::endl;
 		return 1;
 	}
 	
