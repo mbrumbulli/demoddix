@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #include <cstring>
@@ -21,15 +21,11 @@
 #include <climits>
 #include <cfloat>
 #include <algorithm>
-#include <unistd.h>
 #include <GL/freeglut.h>
 #include "demoddix.hpp"
 
 const unsigned int Demoddix::bufferSize 			= 1024; // buffer size for reading
-const char* Demoddix::iniFileName					= "RTDS_gen.ini"; // configuration file containing list of states, processes, semaphores, and messages
-
-FILE* Demoddix::iniFile								= NULL; // file pointer to iniFileName
-std::vector<FILE*> Demoddix::fileList				= {}; // list of trace files
+FILE* Demoddix::iniFile								= NULL; // configuration file containing list of states, processes, semaphores, and messages
 
 std::vector<State> Demoddix::stateList				= {}; // list of states found in iniFile
 std::vector<Process> Demoddix::processList			= {}; // list of processes found in iniFile 
@@ -73,70 +69,57 @@ void Demoddix::Open()
 		if (strstr(buffer, "[States]") != NULL) {
 			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, stateF, name, &id) == 2) {
 				if (Demoddix::stateList.size() < id + 1) {
-					Demoddix::stateList.resize(id + 1, State(std::string(name), rand() % 104, 1));
+					Demoddix::stateList.resize(id + 1, State(std::string(""), 0, 0));
 				}
-				else {
-					Demoddix::stateList[id] = State(std::string(name), rand() % 104, 1);
-				}
+				Demoddix::stateList[id] = State(std::string(name), rand() % 104, 1);
 			}
 		}
 		else if (strstr(buffer, "[Processes]") != NULL) {
 			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, processF, name, &id) == 2) {
-				if (Demoddix::processList.size() < id) {
-					Demoddix::processList.resize(id, Process(std::string(name)));
+				if (Demoddix::processList.size() < id + 1) {
+					Demoddix::processList.resize(id + 1, Process(std::string("")));
 				}
-				else {
-					Demoddix::processList[id - 1] = Process(std::string(name));
-				}
+				Demoddix::processList[id] = Process(std::string(name));
 			}
 		}
 		else if (strstr(buffer, "[Semaphores]") != NULL) {
 			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, semaphoreF, name, &id) == 2) {
-				if (Demoddix::semaphoreList.size() < id) {
-					Demoddix::semaphoreList.resize(id, Semaphore(std::string(name)));
+				if (Demoddix::semaphoreList.size() < id + 1) {
+					Demoddix::semaphoreList.resize(id + 1, Semaphore(std::string("")));
 				}
-				else {
-					Demoddix::semaphoreList[id - 1] = Semaphore(std::string(name));
-				}
+				Demoddix::semaphoreList[id] = Semaphore(std::string(name));
 			}
 		}
 		else if (strstr(buffer, "[Messages]") != NULL) {
 			while (fgets(buffer, Demoddix::bufferSize, iniFile) != NULL && sscanf(buffer, messageF, name, &id) == 2) {
-				if (Demoddix::messageList.size() < id) {
-					Demoddix::messageList.resize(id, Message(std::string(name), rand() % 104));
+				if (Demoddix::messageList.size() < id + 1) {
+					Demoddix::messageList.resize(id + 1, Message(std::string(""), 0));
 				}
-				else {
-					Demoddix::messageList[id - 1] = Message(std::string(name), rand() % 104);
-				}
+				Demoddix::messageList[id] = Message(std::string(name), rand() % 104);
 			}
 		}
 	}
 	
-	// read trace files and fill node and event lists
-	// calculate min & max coordinates needed for transformation  
-	Demoddix::nodeList.resize(Demoddix::fileList.size(), Node(0, 0, 0));
+	// read trace files and fill event lists
+	// calculate min & max coordinates needed for transformation
 	double xMin = DBL_MAX, yMin = DBL_MAX, xMax = DBL_MIN, yMax = DBL_MIN;
-	for (auto fp: Demoddix::fileList) {
-		fpos_t pos;
-		fgetpos(fp, &pos);
-		unsigned long id;
-		unsigned long long time;
-		double x, y;
-		while (fgets(buffer, Demoddix::bufferSize, fp) != NULL) {
-			if (sscanf(buffer, traceF, &id, &time) == 2) {
-				Demoddix::eventList.push_back(Event(time, id, pos));
+	for (auto& n: Demoddix::nodeList) {
+		if (n.fp != NULL) {
+			fpos_t pos;
+			fgetpos(n.fp, &pos);
+			unsigned long id;
+			unsigned long long time;
+			while (fgets(buffer, Demoddix::bufferSize, n.fp) != NULL) {
+				if (sscanf(buffer, traceF, &id, &time) == 2) {
+					Demoddix::eventList.push_back(Event(time, id, pos));
+				}
+				fgetpos(n.fp, &pos);
 			}
-			else if (sscanf(buffer, nodeF, &id, &x, &y) == 3) {
-				// default state for nodes is 0
-				Demoddix::nodeList[id] = Node(x, y, 0);
-				xMin = fmin(x, xMin);
-				yMin = fmin(y, yMin);
-				xMax = fmax(x, xMax);
-				yMax = fmax(y, yMax);
-			}
-			fgetpos(fp, &pos);
+			xMin = fmin(n.x, xMin);
+			yMin = fmin(n.y, yMin);
+			xMax = fmax(n.x, xMax);
+			yMax = fmax(n.y, yMax);
 		}
-		
 	}
 	
 	// sort events by time maintaining relative position of events with the same time 
@@ -168,9 +151,9 @@ void Demoddix::Close()
 	}
 	
 	// close trace files
-	for (auto fp: Demoddix::fileList) {
-		if (fp != NULL) {
-			fclose(fp);
+	for (auto& n: Demoddix::nodeList) {
+		if (n.fp != NULL) {
+			fclose(n.fp);
 		}
 	}
 }
@@ -189,7 +172,7 @@ void Demoddix::Forward()
 		if (e.time > Demoddix::currentTime) {
 			break;
 		}
-		FILE* fp = Demoddix::fileList[e.id];
+		FILE* fp = Demoddix::nodeList[e.id].fp;
 		fpos_t pos = e.pos;
 		fsetpos(fp, &pos);
 		if (fgets(buffer, Demoddix::bufferSize, fp) != NULL) {
@@ -214,7 +197,7 @@ void Demoddix::Rewind()
 			++Demoddix::currentEvent;
 			break;
 		}
-		FILE* fp = Demoddix::fileList[e.id];
+		FILE* fp = Demoddix::nodeList[e.id].fp;
 		fpos_t pos = e.pos;
 		fsetpos(fp, &pos);
 		if (fgets(buffer, Demoddix::bufferSize, fp) != NULL) {
@@ -232,7 +215,7 @@ void Demoddix::Next()
 		Event& e = Demoddix::eventList[Demoddix::currentEvent];
 		Demoddix::currentTime = e.time;
 		++Demoddix::currentEvent;
-		FILE* fp = Demoddix::fileList[e.id];
+		FILE* fp = Demoddix::nodeList[e.id].fp;
 		fpos_t pos = e.pos;
 		fsetpos(fp, &pos);
 		if (fgets(buffer, sizeof(buffer), fp) != NULL) {
@@ -252,7 +235,7 @@ void Demoddix::Previous()
 		--Demoddix::currentEvent;
 		Event& e = Demoddix::eventList[Demoddix::currentEvent];
 		Demoddix::currentTime = e.time;
-		FILE* fp = Demoddix::fileList[e.id];
+		FILE* fp = Demoddix::nodeList[e.id].fp;
 		fpos_t pos = e.pos;
 		fsetpos(fp, &pos);
 		if (fgets(buffer, sizeof(buffer), fp) != NULL) {
@@ -356,32 +339,43 @@ bool Demoddix::Back(const Event& e, const char* buffer)
 
 int main(int argc, char **argv) 
 {
-	if (argc != 3) {
-		std::cerr << "Usage: " << argv[0] << " [configuration-file]" << " [trace-name]"  << std::endl;
+	if (argc < 3) {
+		std::cerr << "Usage: " << argv[0] << " [configuration-file]" << " [trace-file(s)]"  << std::endl;
 		return 1;
 	}
 	
-	Demoddix::iniFileName = argv[1];
-	Demoddix::iniFile = fopen(Demoddix::iniFileName, "r");
+	Demoddix::iniFile = fopen(argv[1], "r");
 	if (Demoddix::iniFile == NULL) {
-		std::cerr << "Cannot find configuration file " << Demoddix::iniFileName << "!" << std::endl;
+		std::cerr << "Cannot find configuration file " << argv[1] << "!" << std::endl;
 		return 1;
 	}
 	
-	// check for trace files and insert them into the list
-	for (unsigned long i = 0; i < ULONG_MAX; ++i) {
-		char fileName[512];
-		sprintf(fileName, "%s_%lu.xml", argv[2], i);
-		if (access(fileName, F_OK) == 0) {
-			FILE* fp = fopen(fileName, "r");
+	// scan trace files and fill node list
+	for (int i = 2; i < argc; ++i) {
+		if (std::string(argv[i]).find(".xml") != std::string::npos) {
+			FILE* fp = fopen(argv[i], "r");
 			if (fp != NULL) {
-				Demoddix::fileList.push_back(fp);
-				continue;
+				bool ok = false;
+				unsigned long id;
+				double x, y;
+				char buffer[Demoddix::bufferSize];
+				while (fgets(buffer, Demoddix::bufferSize, fp) != NULL) {
+					if (sscanf(buffer, nodeF, &id, &x, &y) == 3) {
+						if (Demoddix::nodeList.size() < id + 1) {
+							Demoddix::nodeList.resize(id + 1, Node(0, 0, 0, NULL));
+						}
+						Demoddix::nodeList[id] = Node(x, y, 0, fp);
+						ok = true;
+						break;
+					}
+				}
+				if (!ok) {
+					fclose(fp);
+				}
 			}
 		}
-		break;
 	}
-	if (Demoddix::fileList.empty()) {
+	if (Demoddix::nodeList.empty()) {
 		std::cerr << "No trace files found!" << std::endl;
 		fclose(Demoddix::iniFile);
 		return 1;

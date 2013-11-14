@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #ifndef DEMODDIX_HPP
@@ -69,24 +69,26 @@ public:
 		name(name_), 
 		color(color_), 
 		position(0),
-		active(true) {}
+		show(true) {}
 	
 	std::string name;	// name of the message
 	unsigned int color;	// index of the color found in Window
 	int position; 		// used by MessageWindow for positioning
-	bool active;		// true for showing message
+	bool show;			// true for showing message
 };
 
 class Node {
 public:
-	Node(double x_, double y_, unsigned int state_): 
+	Node(double x_, double y_, unsigned int state_, FILE* fp_): 
 		x(x_), 
 		y(y_), 
-		state(state_) {}
+		state(state_),
+		fp(fp_) {}
 
 	double x;			// x coordinate of the node
 	double y;			// y coordinate of the node
 	unsigned int state;	// index of the current State of the node
+	FILE* fp;
 };
 
 class Packet {
@@ -128,10 +130,7 @@ public:
 	static bool Back(const Event& e, const char* buffer);
 	
 	static const unsigned int bufferSize;
-	static const char* iniFileName;
-	
 	static FILE* iniFile;
-	static std::vector<FILE*> fileList;
 	
 	static std::vector<State> stateList;
 	static std::vector<Process> processList;

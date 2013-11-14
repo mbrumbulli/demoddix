@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #include <climits>
@@ -72,19 +72,21 @@ void StateWindow::Display()
 	int y = Window::PADDING;
 	glPointSize(Window::POINT);
 	for (auto& s: Demoddix::stateList) {
-		// color
-		glBegin(GL_POINTS);
-			glColor3ub(Window::COLOR[s.color][0], Window::COLOR[s.color][1], Window::COLOR[s.color][2]);
-			glVertex2d(-1.0 + (Window::PADDING + Window::POINT / 2.0) * xRatio, 1.0 - (y + Window::POINT / 2.0) * yRatio);
-		glEnd();
-		// state name and priority
-		glColor3ub(255, 255, 255);
-		glRasterPos2d(-1.0 + (2 * Window::PADDING + Window::POINT) * xRatio, 1.0 - (y + 4 + Window::POINT / 2.0) * yRatio);
-		char str[256];
-		sprintf(str, " (%2d) %s", s.priority, s.name.c_str());
-		glutBitmapString(Window::FONT, (const unsigned char*) str);
-		s.position = y;
-		y += Window::POINT + Window::PADDING;
+		if (!s.name.empty()) {
+			// color
+			glBegin(GL_POINTS);
+				glColor3ub(Window::COLOR[s.color][0], Window::COLOR[s.color][1], Window::COLOR[s.color][2]);
+				glVertex2d(-1.0 + (Window::PADDING + Window::POINT / 2.0) * xRatio, 1.0 - (y + Window::POINT / 2.0) * yRatio);
+			glEnd();
+			// state name and priority
+			glColor3ub(255, 255, 255);
+			glRasterPos2d(-1.0 + (2 * Window::PADDING + Window::POINT) * xRatio, 1.0 - (y + 4 + Window::POINT / 2.0) * yRatio);
+			char str[256];
+			sprintf(str, " (%2d) %s", s.priority, s.name.c_str());
+			glutBitmapString(Window::FONT, (const unsigned char*) str);
+			s.position = y;
+			y += Window::POINT + Window::PADDING;
+		}
 	}
 	
 	glutSwapBuffers();
@@ -118,18 +120,20 @@ void StateWindow::OnMouseClick(int button, int state, int x, int y)
 		y += StateWindow::yMove;
 		for (unsigned long i = 0; i < Demoddix::stateList.size(); ++i) {
 			State& s = Demoddix::stateList[i];
-			if (y >= s.position && y <= s.position + Window::POINT) {
-				if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-					if (s.priority < 99) {
-						++s.priority;
+			if (!s.name.empty()) {
+				if (y >= s.position && y <= s.position + Window::POINT) {
+					if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+						if (s.priority < 99) {
+							++s.priority;
+						}
 					}
+					else {
+						StateWindow::selectedState = i;
+						glutSetWindow(StateColorWindow::id);
+						glutShowWindow();
+					}
+					break;
 				}
-				else {
-					StateWindow::selectedState = i;
-					glutSetWindow(StateColorWindow::id);
-					glutShowWindow();
-				}
-				break;
 			}
 		}
 	}
@@ -138,11 +142,13 @@ void StateWindow::OnMouseClick(int button, int state, int x, int y)
 		if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
 			y += StateWindow::yMove;
 			for (auto& s: Demoddix::stateList) {
-				if (y >= s.position && y <= s.position + Window::POINT) {
-					if (s.priority > 0) {
-						--s.priority;
+				if (!s.name.empty()) {
+					if (y >= s.position && y <= s.position + Window::POINT) {
+						if (s.priority > 0) {
+							--s.priority;
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #include <cstring>
@@ -39,8 +39,8 @@ std::atomic_bool Tracer::doPoll(true);						// guard for checking (if false term
 static const char* taskCreatedF 		= "<taskCreated p2pId=\"n%lu\" time=\"%llu\" creatorId=\"%lu\" pName=\"p%u\" creatorName=\"p%u\" pId=\"%lu\" />";
 static const char* taskDeletedF 		= "<taskDeleted p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" pId=\"%lu\" />";
 static const char* messageSentF 		= "<messageSent p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" mId=\"%lu\" pId=\"%lu\" sigNum=\"%u\" msgName=\"m%u\" />";
-static const char* messageReceivedF 	= "<messageReceived p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\"mId=\"%lu\" pId=\"%lu\" sigNum=\"%u\" msgName=\"m%u\" />";
-static const char* messageSavedF 		= "<messageSaved p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\"mId=\"%lu\" pId=\"%lu\" sigNum=\"%u\" msgName=\"m%u\" />";
+static const char* messageReceivedF 	= "<messageReceived p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" mId=\"%lu\" pId=\"%lu\" sigNum=\"%u\" msgName=\"m%u\" />";
+static const char* messageSavedF 		= "<messageSaved p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" mId=\"%lu\" pId=\"%lu\" sigNum=\"%u\" msgName=\"m%u\" />";
 static const char* semaphoreCreatedF 	= "<semaphoreCreated p2pId=\"n%lu\" time=\"%llu\" semName=\"x%u\" stillAvailable=\"%d\" pId=\"%lu\" />";
 static const char* takeAttemptF 		= "<takeAttempt p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" semName=\"x%u\" timeout=\"%d\" pId=\"%lu\" semId=\"%lu\" />";
 static const char* takeSuccededF 		= "<takeSucceeded p2pId=\"n%lu\" time=\"%llu\" pName=\"p%u\" semName=\"x%u\" stillAvailable=\"%d\" pId=\"%lu\" semId=\"%lu\" />";
@@ -77,9 +77,9 @@ void Tracer::Close()
 // launch tracer
 void Tracer::Launch(unsigned long id) 
 {
-	// tracer is still active
+	// tracer is still show
 	if (Tracer::tracerList[id].status() != Tracer::IDLE) {
-		std::cerr << "Tracer with id = " << id << " is still active!" << std::endl;
+		std::cerr << "Tracer with id = " << id << " is still show!" << std::endl;
 		return;
 	}
 	
@@ -228,63 +228,63 @@ void Tracer::Send(const char* buffer)
 	char info[256];
 	if (sscanf(buffer, taskCreatedF, &p2pId, &time, &creatorId, &pName, &creatorName, &pId) == 6) {
 		sprintf(command, "taskCreated| -t%llu| -c%lu| -n%s| -N%s| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, creatorId, Demoddix::processList[pName - 1].name.c_str(), Demoddix::processList[creatorName - 1].name.c_str(), pId);
+			(time - Demoddix::beginTime) / 1000000, creatorId, Demoddix::processList[pName].name.c_str(), Demoddix::processList[creatorName].name.c_str(), pId);
 	}
 	else if (sscanf(buffer, taskDeletedF, &p2pId, &time, &pName, &pId) == 4) {
 		sprintf(command, "taskDeleted| -t%llu| -n%s| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), pId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), pId);
 	}
 	else if (sscanf(buffer, messageSentF, &p2pId, &time, &pName, &mId, &pId, &sigNum, &msgName) == 7) {
 		sprintf(command, "messageSent| -t%llu| -n%s| -i%lu| %lu| %d| %s|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName - 1].name.c_str());
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName].name.c_str());
 	}
 	else if (sscanf(buffer, messageReceivedF, &p2pId, &time, &pName, &mId, &pId, &sigNum, &msgName) == 7) {
 		sprintf(command, "messageReceived| -t%llu| -n%s| -i%lu| %lu| %d| %s|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName - 1].name.c_str());
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName].name.c_str());
 	}
 	else if (sscanf(buffer, messageSavedF, &p2pId, &time, &pName, &mId, &pId, &sigNum, &msgName) == 7) {
 		sprintf(command, "messageSaved| -t%llu| -n%s| -i%lu| %lu| %d| %s|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName - 1].name.c_str());
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), mId, pId, sigNum, Demoddix::messageList[msgName].name.c_str());
 	}
 	else if (sscanf(buffer, semaphoreCreatedF, &p2pId, &time, &semName, &stillAvailable, &pId)) {
 		sprintf(command, "semaphoreCreated| -t%llu| -s%s| -a%d| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::semaphoreList[semName - 1].name.c_str(), stillAvailable, pId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::semaphoreList[semName].name.c_str(), stillAvailable, pId);
 	}
 	else if (sscanf(buffer, takeAttemptF, &p2pId, &time, &pName, &semName, &timeout, &pId, &semId)) {
 		sprintf(command, "takeAttempt| -t%llu| -n%s| -s%s| -T%d| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::semaphoreList[semName - 1].name.c_str(), timeout, pId, semId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::semaphoreList[semName].name.c_str(), timeout, pId, semId);
 	}
 	else if (sscanf(buffer, takeSuccededF, &p2pId, &time, &pName, &semName, &stillAvailable, &pId, &semId)) {
 		sprintf(command, "takeSucceeded| -t%llu| -n%s| -s%s| -a%d| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::semaphoreList[semName - 1].name.c_str(), stillAvailable, pId, semId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::semaphoreList[semName].name.c_str(), stillAvailable, pId, semId);
 	}
 	else if (sscanf(buffer, takeTimedOutF, &p2pId, &time, &pName, &semName, &pId, &semId)) {
 		sprintf(command, "takeTimedOut| -t%llu| -n%s| -s%s| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::semaphoreList[semName -1].name.c_str(), pId, semId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::semaphoreList[semName].name.c_str(), pId, semId);
 	}
 	else if (sscanf(buffer, giveSemF, &p2pId, &time, &pName, &semName, &pId, &semId)) {
 		sprintf(command, "giveSem| -t%llu| -n%s| -s%s| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::semaphoreList[semName - 1].name.c_str(), pId, semId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::semaphoreList[semName].name.c_str(), pId, semId);
 	}
 	else if (sscanf(buffer, timerStartedF, &p2pId, &time, &pName, &timerName, &pId, &tId, &timeLeft)) {
 		sprintf(command, "timerStarted| -t%llu| -n%s| -T%s| %lu| %lu| %d|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::messageList[timerName - 1].name.c_str(), pId, tId, timeLeft);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::messageList[timerName].name.c_str(), pId, tId, timeLeft);
 	}
 	else if (sscanf(buffer, timerCancelledF, &p2pId, &time, &pName, &timerName, &pId, &tId)) {
 		sprintf(command, "timerCancelled| -t%llu| -n%s| -T%s| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::messageList[timerName - 1].name.c_str(), pId, tId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::messageList[timerName].name.c_str(), pId, tId);
 	}
 	else if (sscanf(buffer, timerTimedOutF, &p2pId, &time, &pName, &timerName, &pId, &tId)) {
 		sprintf(command, "timerTimedOut| -t%llu| -n%s| -T%s| %lu| %lu|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), Demoddix::messageList[timerName - 1].name.c_str(), pId, tId);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), Demoddix::messageList[timerName].name.c_str(), pId, tId);
 	}
 	else if (sscanf(buffer, taskChangedStateF, &p2pId, &time, &pName, &pId, &stateName)) {
 		sprintf(command, "taskChangedState| -t%llu| -n%s| %lu| %s|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), pId, Demoddix::stateList[stateName].name.c_str());
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), pId, Demoddix::stateList[stateName].name.c_str());
 	}
 	else if (sscanf(buffer, informationF, &p2pId, &time, &pName, &pId, info)) {
 		sprintf(command, "information| -t%llu| -n%s| %lu| %s|\n", 
-			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName - 1].name.c_str(), pId, info);
+			(time - Demoddix::beginTime) / 1000000, Demoddix::processList[pName].name.c_str(), pId, info);
 	}
 	else {
 		return;

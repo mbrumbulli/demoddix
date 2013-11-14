@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #include <cmath>
@@ -72,8 +72,8 @@ void MainWindow::Display()
 	// sent packets = normal line with an arrow head at destination
 	// lost packets = dotted line with an arrow head at destination 
 	for (auto& p: Demoddix::packetList) {
-		// don't show if not active
-		if (!Demoddix::messageList[p.message - 1].active) {
+		// show packet?
+		if (!Demoddix::messageList[p.message].show) {
 			continue;
 		}
 		
@@ -82,7 +82,7 @@ void MainWindow::Display()
 		double ySrc = Demoddix::nodeList[p.source].y;
 		double xDst = Demoddix::nodeList[p.destination].x;
 		double yDst = Demoddix::nodeList[p.destination].y;
-		unsigned int c = Demoddix::messageList[p.message - 1].color;
+		unsigned int c = Demoddix::messageList[p.message].color;
 		
 		// draw line
 		if (p.lost) {
@@ -126,20 +126,22 @@ void MainWindow::Display()
 	glPointSize(Window::POINT);
 	for (unsigned long i = 0; i < Demoddix::nodeList.size(); ++i) {
 		Node& n = Demoddix::nodeList[i];
-		unsigned int c = Demoddix::stateList[n.state].color;
-		
-		// draw node
-		glBegin(GL_POINTS);
-			glColor3ub(Window::COLOR[c][0], Window::COLOR[c][1], Window::COLOR[c][2]);
-			glVertex2f(n.x, n.y);
-		glEnd();
-		
-		// draw node id
-		double x = n.x + 7.0 * xRatio;
-		double y = n.y + 7.0 * yRatio;
-		glColor3ub(255, 255, 255);
-		glRasterPos2d(x, y);
-		glutBitmapString(Window::FONT, (const unsigned char *) std::to_string(i).c_str());
+		if (n.fp != NULL) {
+			unsigned int c = Demoddix::stateList[n.state].color;
+			
+			// draw node
+			glBegin(GL_POINTS);
+				glColor3ub(Window::COLOR[c][0], Window::COLOR[c][1], Window::COLOR[c][2]);
+				glVertex2f(n.x, n.y);
+			glEnd();
+			
+			// draw node id
+			double x = n.x + 7.0 * xRatio;
+			double y = n.y + 7.0 * yRatio;
+			glColor3ub(255, 255, 255);
+			glRasterPos2d(x, y);
+			glutBitmapString(Window::FONT, (const unsigned char *) std::to_string(i).c_str());
+		}
 	}
 
 	glutSwapBuffers();

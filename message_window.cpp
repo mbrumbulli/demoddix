@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * Author: Mihal Brumbulli mbrumbulli@gmail.com
+ * Author: Mihal Brumbulli <mbrumbulli@gmail.com>
  */
 
 #include <climits>
@@ -72,20 +72,22 @@ void MessageWindow::Display()
 	int y = Window::PADDING;
 	glPointSize(Window::POINT);
 	for (auto& m: Demoddix::messageList) {
-		// color
-		glBegin(GL_POINTS);
-			glColor3ub(Window::COLOR[m.color][0], Window::COLOR[m.color][1], Window::COLOR[m.color][2]);
-			glVertex2d(-1.0 + (Window::PADDING + Window::POINT / 2.0) * xRatio, 1.0 - (y + Window::POINT / 2.0) * yRatio);
-		glEnd();
-		// message name and active symbol
-		glColor3ub(255, 255, 255);
-		glRasterPos2d(-1.0 + (2 * Window::PADDING + Window::POINT) * xRatio, 1.0 - (y + 4 + Window::POINT / 2.0) * yRatio);
-		char str[256];
-		if (m.active) sprintf(str, " [X] %s", m.name.c_str());
-		else sprintf(str, " [ ] %s", m.name.c_str());
-		glutBitmapString(Window::FONT, (const unsigned char*) str);
-		m.position = y;
-		y += Window::POINT + Window::PADDING;
+		if (!m.name.empty()) {
+			// color
+			glBegin(GL_POINTS);
+				glColor3ub(Window::COLOR[m.color][0], Window::COLOR[m.color][1], Window::COLOR[m.color][2]);
+				glVertex2d(-1.0 + (Window::PADDING + Window::POINT / 2.0) * xRatio, 1.0 - (y + Window::POINT / 2.0) * yRatio);
+			glEnd();
+			// message name and show symbol
+			glColor3ub(255, 255, 255);
+			glRasterPos2d(-1.0 + (2 * Window::PADDING + Window::POINT) * xRatio, 1.0 - (y + 4 + Window::POINT / 2.0) * yRatio);
+			char str[256];
+			if (m.show) sprintf(str, " [X] %s", m.name.c_str());
+			else sprintf(str, " [ ] %s", m.name.c_str());
+			glutBitmapString(Window::FONT, (const unsigned char*) str);
+			m.position = y;
+			y += Window::POINT + Window::PADDING;
+		}
 	}
 	
 	glutSwapBuffers();
@@ -121,18 +123,20 @@ void MessageWindow::OnMouseClick(int button, int state, int x, int y)
 		y += MessageWindow::yMove;
 		for (unsigned long i = 0; i < Demoddix::messageList.size(); ++i) {
 			Message& m = Demoddix::messageList[i];
-			if (y >= m.position && y <= m.position + Window::POINT) {
-				if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
-					m.active = !m.active;
-					glutSetWindow(MainWindow::id);
-					glutPostRedisplay();
+			if (!m.name.empty()) {
+				if (y >= m.position && y <= m.position + Window::POINT) {
+					if (glutGetModifiers() == GLUT_ACTIVE_CTRL) {
+						m.show = !m.show;
+						glutSetWindow(MainWindow::id);
+						glutPostRedisplay();
+					}
+					else {
+						MessageWindow::selectedMessage = i;
+						glutSetWindow(MessageColorWindow::id);
+						glutShowWindow();
+					}
+					break;
 				}
-				else {
-					MessageWindow::selectedMessage = i;
-					glutSetWindow(MessageColorWindow::id);
-					glutShowWindow();
-				}
-				break;
 			}
 		}
 	}
