@@ -46,28 +46,28 @@ Usage
 
 To run the example provided with this distribution: `./demoddix example/config.ini example/clientserver`  
 
-Left = Forward  
-Right = Rewind  
-Up = Next  
-Down = Previous  
-Page Up = Increment Step  
-Page Down = Decrement Step  
-r = Reset  
-p = Pause MscTracer
+**Left** = Forward  
+**Right** = Rewind  
+**Up** = Next  
+**Down** = Previous  
+**Page Up** = Increment Step  
+**Page Down** = Decrement Step  
+**r** = Reset  
+**p** = Pause MscTracer
 
-Ctrl + Mouse Left on *node* = Open MscTracer  
-Mouse Move while holding Left = Move View  
-Mouse Wheel = Zoom
+**Ctrl + Mouse Left** on *node* = Open MscTracer  
+**Mouse Move** while holding **Mouse Left** = Move View  
+**Mouse Wheel** = Zoom
 
-Mouse Left on *state* or *message* = Open Color Chooser  
-Mouse Left on Color Chooser = Select Color and Close Color Chooser  
-Mouse Right on Color Chooser = Close Color Chooser  
-Ctrl + Mouse Left on *state* = Increment Priority  
-Ctrl + Mouse Right on *state* = Decrement Priority  
-Ctrl + Mouse Left on *message* = Show / Hide
+**Mouse Left** on *state* or *message* = Open Color Chooser  
+**Mouse Left** on Color Chooser = Select Color and Close Color Chooser  
+**Mouse Right** on Color Chooser = Close Color Chooser  
+**Ctrl + Mouse Left** on *state* = Increment Priority  
+**Ctrl + Mouse Right** on *state* = Decrement Priority  
+**Ctrl + Mouse Left** on *message* = Show / Hide
 
-For performance reasons **demoddix** does not do any validation of the trace files against the schema. Nevertheless, it
-is advised to do such validation prior to running **demoddix**. To do so avalailable tools like [xmllint](http://xmlsoft.org/xmllint.html) can be used.
+For performance reasons **demoddix** does not do any validation of the trace files against the schema. Nevertheless, 
+prior to running **demoddix**, it is advisable to do a validation with tools like [xmllint](http://xmlsoft.org/xmllint.html).
 
 
 
