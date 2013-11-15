@@ -2,8 +2,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="demoddix">
 		<xs:complexType>
-			<xs:choice maxOccurs="unbounded">
-				<xs:element name="state">
+			<xs:sequence>
+				<xs:element name="state" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required" />
 						<xs:attribute name="id" use="required">
@@ -15,7 +15,7 @@
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="process">
+				<xs:element name="process" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required" />
 						<xs:attribute name="id" use="required">
@@ -27,7 +27,7 @@
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="semaphore">
+				<xs:element name="semaphore" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required" />
 						<xs:attribute name="id" use="required">
@@ -39,7 +39,7 @@
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="message">
+				<xs:element name="message" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required" />
 						<xs:attribute name="id" use="required">
@@ -51,514 +51,516 @@
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="nodeChangedState">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="stateName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="s\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="prevStateName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="s\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="packetSent">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="p2pReceiver" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pktName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="packetReceived">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="p2pSender" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pktName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="packetLost">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="p2pReceiver" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pktName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="taskCreated">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="creatorId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="creatorName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="taskDeleted">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="messageSent">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="msgName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="messageReceived">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="msgName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="messageSaved">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="msgName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="semaphoreCreated">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="semName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="x\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="stillAvailable" type="xs:int" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="takeAttempt">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="semName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="x\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="timeout" type="xs:int" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="takeSucceeded">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="semName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="x\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="stillAvailable" type="xs:int" use="required" />
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="takeTimedOut">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="semName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="x\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="giveSem">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="semName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="x\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="timerStarted">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="timerName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="timeLeft" type="xs:int" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="timerCancelled">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="timerName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="timerTimedOut">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="timerName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="m\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="taskChangedState">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="stateName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="s\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="information">
-					<xs:complexType>
-						<xs:attribute name="p2pId" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="n\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-						<xs:attribute name="pName" use="required">
-							<xs:simpleType>
-								<xs:restriction base="xs:IDREF">
-									<xs:pattern value="p\d+" />
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:attribute>
-						<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-						<xs:attribute name="message" type="xs:string" use="required" />
-					</xs:complexType>
-				</xs:element>
-			</xs:choice>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element name="nodeChangedState">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="stateName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="s\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="prevStateName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="s\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="packetSent">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="p2pReceiver" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pktName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="packetReceived">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="p2pSender" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pktName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="packetLost">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="p2pReceiver" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pktName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="taskCreated">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="creatorId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="creatorName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="taskDeleted">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="messageSent">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="msgName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="messageReceived">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="msgName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="messageSaved">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="msgName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="semaphoreCreated">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="semName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="x\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="stillAvailable" type="xs:int" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="takeAttempt">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="semName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="x\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="timeout" type="xs:int" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="takeSucceeded">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="semName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="x\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="stillAvailable" type="xs:int" use="required" />
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="takeTimedOut">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="semName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="x\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="giveSem">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="semName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="x\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="timerStarted">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="timerName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="timeLeft" type="xs:int" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="timerCancelled">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="timerName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="timerTimedOut">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="timerName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="m\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="taskChangedState">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="stateName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="s\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="information">
+						<xs:complexType>
+							<xs:attribute name="p2pId" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="n\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
+							<xs:attribute name="pName" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:IDREF">
+										<xs:pattern value="p\d+" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="message" type="xs:string" use="required" />
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required" />
 			<xs:attribute name="p2pId" use="required">
 				<xs:simpleType>
