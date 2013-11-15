@@ -52,8 +52,8 @@ To run the example provided with this distribution: `./demoddix example/*.xml`
 **Down** = Previous  
 **Page Up** = Increment Step  
 **Page Down** = Decrement Step  
-**r** = Reset  
-**p** = Pause MscTracer
+**R** = Reset  
+**P** = Pause MscTracer
 
 **Ctrl + Mouse Left** on *node* = Open MscTracer  
 **Mouse Move** while holding **Mouse Left** = Move View  
