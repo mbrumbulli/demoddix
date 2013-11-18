@@ -55,16 +55,11 @@ To run the example provided with this distribution: `./demoddix example/*.xml`
 **R** = Reset  
 **P** = Pause MscTracer
 
-**Ctrl + Mouse Left** on *node* = Open MscTracer  
-**Mouse Move** while holding **Mouse Left** = Move View  
-**Mouse Wheel** = Zoom
-
-**Mouse Left** on *state* or *message* = Open Color Chooser  
-**Mouse Left** on Color Chooser = Select Color and Close Color Chooser  
-**Mouse Right** on Color Chooser = Close Color Chooser  
-**Ctrl + Mouse Left** on *state* = Increment Priority  
-**Ctrl + Mouse Right** on *state* = Decrement Priority  
-**Ctrl + Mouse Left** on *message* = Show / Hide
+**Mouse Left** = Open Color Chooser for State or Message
+**Hold Mouse Left + Mouse Move** = Move View for Nodes
+**Ctrl + Mouse Left** = Open MscTracer | Increment State Priority | Show / Hide Message
+**Ctrl + Mouse Right** = Decrement State Priority 
+**Mouse Wheel** = Zoom | Scroll States or Messages
 
 For performance reasons **demoddix** does not do any validation of the trace files against the schema. Nevertheless, 
 prior to running **demoddix**, it is advisable to do a validation with tools like [xmllint](http://xmlsoft.org/xmllint.html).
