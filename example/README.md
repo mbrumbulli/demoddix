@@ -1,7 +1,7 @@
 ## Introduction
 
 This is a simple client-server application example for **demmoddix**. It consists of four trace files representing
-runtime events of four nodes (one server and three clients). The system was developed using **moddix**.  
+runtime events of four nodes (one server and three clients). The application was developed using **moddix**.  
 
 ## Architecture
 
@@ -32,4 +32,4 @@ Four nodes are created: the server is running on the node with id = 0;
 the clients are running on the nodes with id = 1, 2, 3.
 For simplicity, all nodes are configured to run locally (IP 127.0.0.1), but with different ports.
 
-![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/server.png "client-server: deployment")
+![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/deployment.png "client-server: deployment")
