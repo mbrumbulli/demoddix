@@ -32,4 +32,4 @@ Four nodes are created: the server is running on the node with id = 0;
 the clients are running on the nodes with id = 1, 2, 3.
 For simplicity, all nodes are configured to run locally (IP 127.0.0.1), but with different ports.
 
-![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/server.png "client-server: deployment")
+![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/deployment.png "client-server: deployment")
