@@ -35,7 +35,7 @@ Trace files can be generated automatically for each system developed with **modd
 If **moddix** is not available, this distribution contains a XML Schema that can be used as a reference 
 for generating such traces from any application.
 
-Installation
+Build
 ------
 
 **demoddix** is available for Linux and requires: g++ (-std=c++11 -pthread), OpenGL, and freeglut.  
