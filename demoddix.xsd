@@ -166,7 +166,7 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-							<xs:attribute name="creatorId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="creatorId" type="xs:string" use="required" />
 							<xs:attribute name="pName" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
@@ -181,7 +181,7 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="taskDeleted">
@@ -201,7 +201,7 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="messageSent">
@@ -221,8 +221,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="mId" type="xs:string" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 							<xs:attribute name="msgName" use="required">
 								<xs:simpleType>
@@ -250,8 +250,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="mId" type="xs:string" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 							<xs:attribute name="msgName" use="required">
 								<xs:simpleType>
@@ -279,8 +279,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="mId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="mId" type="xs:string" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 							<xs:attribute name="sigNum" type="xs:unsignedInt" use="required" />
 							<xs:attribute name="msgName" use="required">
 								<xs:simpleType>
@@ -309,7 +309,7 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="stillAvailable" type="xs:int" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="takeAttempt">
@@ -337,8 +337,8 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="timeout" type="xs:int" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="semId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="takeSucceeded">
@@ -366,8 +366,8 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="stillAvailable" type="xs:int" use="required" />
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="semId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="takeTimedOut">
@@ -394,8 +394,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="semId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="giveSem">
@@ -422,8 +422,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="semId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="semId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="timerStarted">
@@ -450,8 +450,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="tId" type="xs:string" use="required" />
 							<xs:attribute name="timeLeft" type="xs:int" use="required" />
 						</xs:complexType>
 					</xs:element>
@@ -479,8 +479,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="tId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="timerTimedOut">
@@ -507,8 +507,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
-							<xs:attribute name="tId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
+							<xs:attribute name="tId" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="taskChangedState">
@@ -528,7 +528,7 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 							<xs:attribute name="stateName" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
@@ -555,7 +555,7 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-							<xs:attribute name="pId" type="xs:unsignedInt" use="required" />
+							<xs:attribute name="pId" type="xs:string" use="required" />
 							<xs:attribute name="message" type="xs:string" use="required" />
 						</xs:complexType>
 					</xs:element>
