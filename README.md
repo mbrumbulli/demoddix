@@ -1,7 +1,7 @@
 Introduction
 ------
 
-**demoddix** is the **de**bugger for **moddix**.  
+**demoddix** is the **de** bugger for **moddix**.  
 **moddix** is a methodology and tool for **mo**del-**d**riven development of 
 **di**stributed **c**ommunication **s**ystems based on [SDL-RT](http://www.sdl-rt.org).
 Tool support is provided as a profile for [RTDS](http://www.pragmadev.com/product/modeling.html).
