@@ -34,8 +34,7 @@ If the counter reaches *MAX* then *mStop* is send and execution terminates, othe
 
 ## Deployment
 
-Four nodes are created: the server is running on the node with id = 0; 
+Four nodes are created: the server is running on the node with id = 0 (192.168.1.1:50000); 
 the clients are running on the nodes with id = 1, 2, 3.
-For simplicity, all nodes are configured to run locally (IP 127.0.0.1), but with different ports.
 
 ![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/deployment.png "client-server: deployment")
