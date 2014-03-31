@@ -1,9 +1,9 @@
 Introduction
 ------
 
-**demoddix** is the **de**bugger for **moddix**.  
-**moddix** is a methodology and tool for **mo**del-**d**riven development of 
-**di**stributed **c**ommunication **s**ystems based on [SDL-RT](http://www.sdl-rt.org).
+**demoddix** is the <b>de</b>bugger for **moddix**.  
+**moddix** is a methodology and tool for <b>mo</b>del-<b>d</b>riven development of 
+<b>di</b>stributed <b>c</b>ommunication <b>s</b>ystems based on [SDL-RT](http://www.sdl-rt.org).
 Tool support is provided as a profile for [RTDS](http://www.pragmadev.com/product/modeling.html).
 It can generate code for Linux, [ns-3](http://www.nsnam.org), and [OdemX](http://sourceforge.net/projects/odemx/).
 
@@ -62,7 +62,7 @@ To run the example provided with this distribution: `./demoddix example/*.xml`
 **Mouse Wheel** = Zoom | Scroll States or Messages
 
 For performance reasons **demoddix** does not do any validation of the trace files against the schema. Nevertheless, 
-prior to running **demoddix**, it is advisable to do a validation with tools like [xmllint](http://xmlsoft.org/xmllint.html).
+prior to running **demoddix**, it is advisable to do such validation with tools like [xmllint](http://xmlsoft.org/xmllint.html).
 
 
 
