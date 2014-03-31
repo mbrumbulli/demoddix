@@ -36,7 +36,7 @@ unsigned long MessageWindow::selectedMessage 	= ULONG_MAX; // index of selected 
 void MessageWindow::Create() 
 {
 	MessageWindow::id = glutCreateSubWindow(RootWindow::id, MessageWindow::xPos, MessageWindow::yPos, MessageWindow::width, MessageWindow::height);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(Window::BG_COLOR[0] / 255.0, Window::BG_COLOR[1] / 255.0, Window::BG_COLOR[2] / 255.0, 1.0);
 	glutDisplayFunc(MessageWindow::Display);
 	glutMouseFunc(MessageWindow::OnMouseClick);
 	
@@ -56,7 +56,7 @@ void MessageWindow::Display()
 	// window border for color chooser
 	glLineWidth(2.0);
 	if (MessageWindow::selectedMessage != ULONG_MAX) {
-		glColor3ub(100, 100, 100);
+		glColor3ub(Window::BD_COLOR[0], Window::BD_COLOR[1], Window::BD_COLOR[2]);
 		glBegin(GL_LINE_LOOP);
 			glVertex2d(-1.0 + MessageColorWindow::xPos * xRatio, 1.0 - (MessageColorWindow::yPos + MessageColorWindow::height) * yRatio); // bottom left
 			glVertex2d(-1.0 + (MessageColorWindow::xPos + MessageColorWindow::width) * xRatio, 1.0 - (MessageColorWindow::yPos + MessageColorWindow::height) * yRatio); // bottom right
@@ -79,7 +79,7 @@ void MessageWindow::Display()
 				glVertex2d(-1.0 + (Window::PADDING + Window::POINT / 2.0) * xRatio, 1.0 - (y + Window::POINT / 2.0) * yRatio);
 			glEnd();
 			// message name and show symbol
-			glColor3ub(255, 255, 255);
+			glColor3ub(Window::FG_COLOR[0], Window::FG_COLOR[1], Window::FG_COLOR[2]);
 			glRasterPos2d(-1.0 + (2 * Window::PADDING + Window::POINT) * xRatio, 1.0 - (y + 4 + Window::POINT / 2.0) * yRatio);
 			char str[256];
 			if (m.show) sprintf(str, " [X] %s", m.name.c_str());

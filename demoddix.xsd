@@ -54,7 +54,7 @@
 				<xs:choice minOccurs="1" maxOccurs="unbounded">
 					<xs:element name="nodeChangedState">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
 										<xs:pattern value="n\d+" />
@@ -80,7 +80,7 @@
 					</xs:element>
 					<xs:element name="packetSent">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -88,7 +88,7 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-							<xs:attribute name="p2pReceiver" use="required">
+							<xs:attribute name="nReceiver" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
 										<xs:pattern value="n\d+" />
@@ -106,7 +106,7 @@
 					</xs:element>
 					<xs:element name="packetReceived">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -114,7 +114,7 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-							<xs:attribute name="p2pSender" use="required">
+							<xs:attribute name="nSender" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
 										<xs:pattern value="n\d+" />
@@ -132,7 +132,7 @@
 					</xs:element>
 					<xs:element name="packetLost">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -140,7 +140,7 @@
 								</xs:simpleType>
 							</xs:attribute>
 							<xs:attribute name="time" type="xs:unsignedLong" use="required" />
-							<xs:attribute name="p2pReceiver" use="required">
+							<xs:attribute name="nReceiver" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
 										<xs:pattern value="n\d+" />
@@ -158,7 +158,7 @@
 					</xs:element>
 					<xs:element name="taskCreated">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -186,7 +186,7 @@
 					</xs:element>
 					<xs:element name="taskDeleted">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -206,7 +206,7 @@
 					</xs:element>
 					<xs:element name="messageSent">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -235,7 +235,7 @@
 					</xs:element>
 					<xs:element name="messageReceived">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -264,7 +264,7 @@
 					</xs:element>
 					<xs:element name="messageSaved">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -293,7 +293,7 @@
 					</xs:element>
 					<xs:element name="semaphoreCreated">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -314,7 +314,7 @@
 					</xs:element>
 					<xs:element name="takeAttempt">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -343,7 +343,7 @@
 					</xs:element>
 					<xs:element name="takeSucceeded">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
 										<xs:pattern value="n\d+" />
@@ -372,7 +372,7 @@
 					</xs:element>
 					<xs:element name="takeTimedOut">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -400,7 +400,7 @@
 					</xs:element>
 					<xs:element name="giveSem">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -428,7 +428,7 @@
 					</xs:element>
 					<xs:element name="timerStarted">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -457,7 +457,7 @@
 					</xs:element>
 					<xs:element name="timerCancelled">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -485,7 +485,7 @@
 					</xs:element>
 					<xs:element name="timerTimedOut">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -513,7 +513,7 @@
 					</xs:element>
 					<xs:element name="taskChangedState">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -540,7 +540,7 @@
 					</xs:element>
 					<xs:element name="information">
 						<xs:complexType>
-							<xs:attribute name="p2pId" use="required">
+							<xs:attribute name="nId" use="required">
 								<xs:simpleType>
 									<xs:restriction base="xs:IDREF">
 										<xs:pattern value="n\d+" />
@@ -562,7 +562,7 @@
 				</xs:choice>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required" />
-			<xs:attribute name="p2pId" use="required">
+			<xs:attribute name="nId" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:ID">
 						<xs:pattern value="n\d+" />

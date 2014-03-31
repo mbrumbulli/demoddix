@@ -23,6 +23,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 #include "tracer.hpp"
 #include "window.hpp"
 #include "root_window.hpp"
@@ -79,7 +80,7 @@ public:
 
 class Node {
 public:
-	Node(double x_, double y_, unsigned int state_, FILE* fp_): 
+	Node(double x_, double y_, unsigned int state_, FILE* fp_):
 		x(x_), 
 		y(y_), 
 		state(state_),
@@ -136,7 +137,7 @@ public:
 	static std::vector<Semaphore> semaphoreList;
 	static std::vector<Message> messageList;
 	static std::vector<Node> nodeList;
-	static std::vector<Packet> packetList;
+	static std::list<Packet> packetList;
 	
 	static std::vector<Event> eventList;
 	static unsigned long currentEvent;

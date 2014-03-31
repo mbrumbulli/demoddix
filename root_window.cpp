@@ -32,7 +32,7 @@ void RootWindow::Create()
 	glutInitWindowPosition(RootWindow::xPos, RootWindow::yPos);
 	glutInitWindowSize(RootWindow::width, RootWindow::height);
 	RootWindow::id = glutCreateWindow("demoddix");
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(Window::BG_COLOR[0] / 255.0, Window::BG_COLOR[1] / 255.0, Window::BG_COLOR[2] / 255.0, 1.0);
 	glutDisplayFunc(RootWindow::Display);
 	glutReshapeFunc(RootWindow::Reshape);
 	
@@ -53,7 +53,7 @@ void RootWindow::Display()
 	double yRatio = 2.0 / RootWindow::height;
 	
 	// border color & width
-	glColor3ub(100, 100, 100);
+	glColor3ub(Window::BD_COLOR[0], Window::BD_COLOR[1], Window::BD_COLOR[2]);
 	glLineWidth(2.0);
 	
 	// state window border

@@ -30,7 +30,7 @@ int ProgressWindow::yPos = RootWindow::height - (ProgressWindow::height + Window
 void ProgressWindow::Create() 
 {
 	ProgressWindow::id = glutCreateSubWindow(RootWindow::id, ProgressWindow::xPos, ProgressWindow::yPos, ProgressWindow::width, ProgressWindow::height);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(Window::BG_COLOR[0] / 255.0, Window::BG_COLOR[1] / 255.0, Window::BG_COLOR[2] / 255.0, 1.0);
 	glutDisplayFunc(ProgressWindow::Display);
 }
 
@@ -59,11 +59,11 @@ void ProgressWindow::Display()
 	double y = -1.0 * h / 2.0;
 	
 	// draw progress
-	glColor3ub(100, 100, 100);
+	glColor3ub(Window::BD_COLOR[0], Window::BD_COLOR[1], Window::BD_COLOR[2]);
 	glRectd(-1.0, 1.0, progress, -1.0);
 	
 	// draw text
-	glColor3ub(255, 255, 255);
+	glColor3ub(Window::FG_COLOR[0], Window::FG_COLOR[1], Window::FG_COLOR[2]);
 	glRasterPos2d(x, y + 4 * yRatio);
 	glutBitmapString(Window::FONT, (const unsigned char*) message);
 	

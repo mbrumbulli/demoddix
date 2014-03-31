@@ -19,10 +19,14 @@
 #include <GL/freeglut.h>
 #include "window.hpp"
 
-void* Window::FONT 		= GLUT_BITMAP_8_BY_13; // GLUT font
-int Window::POINT 		= 13; // OpenGL point size in px
-int Window:: PADDING 	= 4; // pading in px
-int Window:: SIZE 		= 500; // size for main_window in px
+void* Window::FONT = GLUT_BITMAP_8_BY_13; // GLUT font
+int Window::POINT = 13; // OpenGL point size in px
+int Window::PADDING = 4; // pading in px
+int Window::SIZE = 500; // size for main_window in px
+
+unsigned char Window::BG_COLOR[3] = {255, 255, 255}; // background color
+unsigned char Window::FG_COLOR[3] = {0, 0, 0}; // foreground color
+unsigned char Window::BD_COLOR[3] = {181, 181, 181}; // border color
 
 // color table 13x8
 unsigned char Window::COLOR[104][3] = {

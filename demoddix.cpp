@@ -31,7 +31,7 @@ std::vector<Process> Demoddix::processList			= {}; // list of processes found in
 std::vector<Semaphore> Demoddix::semaphoreList		= {}; // list of semaphores found in iniFile
 std::vector<Message> Demoddix::messageList			= {}; // list of messages found in iniFile
 std::vector<Node> Demoddix::nodeList				= {}; // list of nodes to be drawn
-std::vector<Packet> Demoddix::packetList			= {}; // list of packets (line with arrow) to be drawn
+std::list<Packet> Demoddix::packetList				= {}; // list of packets (line with arrow) to be drawn
 
 std::vector<Event> Demoddix::eventList				= {}; // list of events		
 unsigned long Demoddix::currentEvent				= 0; // index to the current event 
@@ -45,16 +45,16 @@ unsigned long long Demoddix::stepTime				= 1000000; // time to step forward (or 
 
 
 // format for reading values from trace files
-static const char* nodeF				= "<demoddix name=\"%[^\"]\" p2pId=\"n%lu\" x=\"%lf\" y=\"%lf\">";
+static const char* nodeF				= "<demoddix name=\"%[^\"]\" nId=\"n%lu\" x=\"%lf\" y=\"%lf\">";
 static const char* stateF				= "<state id=\"s%lu\" name=\"%[^\"]\" />";
 static const char* processF				= "<process id=\"p%lu\" name=\"%[^\"]\" />";
 static const char* semaphoreF			= "<semaphore id=\"x%lu\" name=\"%[^\"]\" />";
 static const char* messageF				= "<message id=\"m%lu\" name=\"%[^\"]\" />";
-static const char* traceF				= "<%*s p2pId=\"n%lu\" time=\"%llu\"";
-static const char* nodeChangedStateF	= "<nodeChangedState p2pId=\"n%lu\" time=\"%llu\" stateName=\"s%u\" prevStateName=\"s%u\" />";
-static const char* packetSentF			= "<packetSent p2pId=\"n%lu\" time=\"%llu\" p2pReceiver=\"n%lu\" pktName=\"m%u\" />";
-static const char* packetReceivedF		= "<packetReceived p2pId=\"n%lu\" time=\"%llu\" p2pSender=\"n%lu\" pktName=\"m%u\" />";
-static const char* packetLostF			= "<packetLost p2pId=\"n%lu\" time=\"%llu\" p2pReceiver=\"n%lu\" pktName=\"m%u\" />";
+static const char* traceF				= "<%*s nId=\"n%lu\" time=\"%llu\"";
+static const char* nodeChangedStateF	= "<nodeChangedState nId=\"n%lu\" time=\"%llu\" stateName=\"s%u\" prevStateName=\"s%u\" />";
+static const char* packetSentF			= "<packetSent nId=\"n%lu\" time=\"%llu\" nReceiver=\"n%lu\" pktName=\"m%u\" />";
+static const char* packetReceivedF		= "<packetReceived nId=\"n%lu\" time=\"%llu\" nSender=\"n%lu\" pktName=\"m%u\" />";
+static const char* packetLostF			= "<packetLost nId=\"n%lu\" time=\"%llu\" nReceiver=\"n%lu\" pktName=\"m%u\" />";
 
 // read configuration and trace files
 void Demoddix::Open()
@@ -101,10 +101,10 @@ void Demoddix::Open()
 				}
 				fgetpos(n.fp, &pos);
 			}
-			xMin = fmin(n.x, xMin);
-			yMin = fmin(n.y, yMin);
-			xMax = fmax(n.x, xMax);
-			yMax = fmax(n.y, yMax);
+			xMin = std::min(n.x, xMin);
+			yMin = std::min(n.y, yMin);
+			xMax = std::max(n.x, xMax);
+			yMax = std::max(n.y, yMax);
 		}
 	}
 	
@@ -144,7 +144,9 @@ void Demoddix::Forward()
 {
 	// update current time
 	Demoddix::currentTime += Demoddix::stepTime;
-	if (Demoddix::currentTime > Demoddix::endTime) Demoddix::currentTime = Demoddix::endTime;
+	if (Demoddix::currentTime > Demoddix::endTime) {
+		Demoddix::currentTime = Demoddix::endTime;
+	}
 	
 	// handle events until current time is reached
 	char buffer[Demoddix::bufferSize];
@@ -166,15 +168,20 @@ void Demoddix::Forward()
 void Demoddix::Rewind() 
 {
 	// update current time
-	Demoddix::currentTime -= Demoddix::stepTime;
-	if (Demoddix::currentTime < Demoddix::beginTime) Demoddix::currentTime = Demoddix::beginTime;
+	// if reached beginning then reset and return, otherwise handle events
+	if (Demoddix::currentTime <= Demoddix::stepTime) {
+		Demoddix::Reset();
+		return;
+	} else {
+		Demoddix::currentTime -= Demoddix::stepTime;	
+	}
 	
 	// handle events until current time is reached
 	char buffer[Demoddix::bufferSize];
 	while (Demoddix::currentEvent > 0) {
 		--Demoddix::currentEvent;
 		Event& e = Demoddix::eventList[Demoddix::currentEvent];
-		if (e.time != Demoddix::beginTime && e.time <= Demoddix::currentTime) {
+		if (e.time <= Demoddix::currentTime) {
 			++Demoddix::currentEvent;
 			break;
 		}
@@ -240,34 +247,37 @@ void Demoddix::Reset()
 
 // handle one event forward 
 bool Demoddix::Front(const Event& e, const char* buffer) 
-{	
-	unsigned long p2pId, p2pSender, p2pReceiver;
+{
+	unsigned long nId, nSender, nReceiver;
 	unsigned int stateName, prevStateName, pktName;
 	unsigned long long time;
 	// handle state change by changing node color (if priority criteria are met) 
-	if (sscanf(buffer, nodeChangedStateF, &p2pId, &time, &stateName, &prevStateName) == 4) {
-		int oldPrio = Demoddix::stateList[Demoddix::nodeList[p2pId].state].priority;
+	if (sscanf(buffer, nodeChangedStateF, &nId, &time, &stateName, &prevStateName) == 4) {
+		int oldPrio = Demoddix::stateList[Demoddix::nodeList[nId].state].priority;
 		int newPrio = Demoddix::stateList[stateName].priority;
 		if (newPrio > 0 && newPrio >= oldPrio) {
-			Demoddix::nodeList[p2pId].state = stateName;
+			Demoddix::nodeList[nId].state = stateName;
 		}
 		return true;
 	}
 	// handle sent by appending a new packet to the list
-	else if (sscanf(buffer, packetSentF, &p2pSender, &time, &p2pReceiver, &pktName) == 4) {
-		Demoddix::packetList.push_back(Packet(p2pSender, p2pReceiver, pktName));
+	else if (sscanf(buffer, packetSentF, &nSender, &time, &nReceiver, &pktName) == 4) {
+		Demoddix::packetList.push_back(Packet(nSender, nReceiver, pktName));
 		return true;
 	}
 	// handle receive by removing the first packet satisfying the criteria
-	else if (sscanf(buffer, packetReceivedF, &p2pReceiver, &time, &p2pSender, &pktName) == 4) {
-		Demoddix::packetList.erase(std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
-			return p.source == p2pSender && p.destination == p2pReceiver && p.message == pktName && !p.lost; 
-		}));
+	else if (sscanf(buffer, packetReceivedF, &nReceiver, &time, &nSender, &pktName) == 4) {
+		auto it = std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
+			return p.source == nSender && p.destination == nReceiver && p.message == pktName && !p.lost; 
+		});
+		if (it != Demoddix::packetList.end()) {
+			Demoddix::packetList.erase(it);
+		}
 		return true;
 	}
 	// handle lost by appending a new packet to the list (same as sent)
-	else if (sscanf(buffer, packetLostF, &p2pSender, &time, &p2pReceiver, &pktName) == 4) {
-		Demoddix::packetList.push_back(Packet(p2pSender, p2pReceiver, pktName, true));
+	else if (sscanf(buffer, packetLostF, &nSender, &time, &nReceiver, &pktName) == 4) {
+		Demoddix::packetList.push_back(Packet(nSender, nReceiver, pktName, true));
 		return true;
 	}
 	// handle other events via the tracer
@@ -282,35 +292,41 @@ bool Demoddix::Front(const Event& e, const char* buffer)
 // handle one event backward
 bool Demoddix::Back(const Event& e, const char* buffer) 
 {	
-	unsigned long p2pId, p2pSender, p2pReceiver;
+	unsigned long nId, nSender, nReceiver;
 	unsigned int stateName, prevStateName, pktName;
 	unsigned long long time;
 	// handle state change by changing node color (if priority criteria are met)
-	if (sscanf(buffer, nodeChangedStateF, &p2pId, &time, &stateName, &prevStateName) == 4) {
-		int oldPrio = Demoddix::stateList[Demoddix::nodeList[p2pId].state].priority;
+	if (sscanf(buffer, nodeChangedStateF, &nId, &time, &stateName, &prevStateName) == 4) {
+		int oldPrio = Demoddix::stateList[Demoddix::nodeList[nId].state].priority;
 		int newPrio = Demoddix::stateList[prevStateName].priority;
 		if (newPrio > 0 && newPrio >= oldPrio) {
-			Demoddix::nodeList[p2pId].state = prevStateName;
+			Demoddix::nodeList[nId].state = prevStateName;
 		}
 		return true;
 	}
 	// handle sent by removing the first packet satisfying the criteria
-	else if (sscanf(buffer, packetSentF, &p2pSender, &time, &p2pReceiver, &pktName) == 4) {
-		Demoddix::packetList.erase(std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
-			return p.source == p2pSender && p.destination == p2pReceiver && p.message == pktName && !p.lost; 
-		}));
+	else if (sscanf(buffer, packetSentF, &nSender, &time, &nReceiver, &pktName) == 4) {
+		auto it = std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
+			return p.source == nSender && p.destination == nReceiver && p.message == pktName && !p.lost; 
+		});
+		if (it != Demoddix::packetList.end()) {
+			Demoddix::packetList.erase(it);
+		}
 		return true;
 	}
 	// handle receive by appending a new packet to the list
-	else if (sscanf(buffer, packetReceivedF, &p2pReceiver, &time, &p2pSender, &pktName) == 4) {
-		Demoddix::packetList.push_back(Packet(p2pSender, p2pReceiver, pktName));
+	else if (sscanf(buffer, packetReceivedF, &nReceiver, &time, &nSender, &pktName) == 4) {
+		Demoddix::packetList.push_back(Packet(nSender, nReceiver, pktName));
 		return true;
 	}
 	// handle lost by removing the first packet satisfying the criteria (same as sent)
-	else if (sscanf(buffer, packetLostF, &p2pSender, &time, &p2pReceiver, &pktName) == 4) {
-		Demoddix::packetList.erase(std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
-			return p.source == p2pSender && p.destination == p2pReceiver && p.message == pktName && p.lost; 
-		}));
+	else if (sscanf(buffer, packetLostF, &nSender, &time, &nReceiver, &pktName) == 4) {
+		auto it = std::find_if(Demoddix::packetList.begin(), Demoddix::packetList.end(), [=](const Packet& p){ 
+			return p.source == nSender && p.destination == nReceiver && p.message == pktName && p.lost; 
+		});
+		if (it != Demoddix::packetList.end()) {
+			Demoddix::packetList.erase(it);
+		}
 		return true;
 	}
 	else {

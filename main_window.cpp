@@ -42,7 +42,7 @@ bool MainWindow::isMoving 		= false; // true if view is being moved
 void MainWindow::Create() 
 {
 	id = glutCreateSubWindow(RootWindow::id, MainWindow::xPos, MainWindow::yPos, MainWindow::width, MainWindow::height);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(Window::BG_COLOR[0] / 255.0, Window::BG_COLOR[1] / 255.0, Window::BG_COLOR[2] / 255.0, 1.0);
 	glutDisplayFunc(MainWindow::Display);
 	glutSpecialFunc(MainWindow::OnSpecialKeyPress);
 	glutKeyboardFunc(MainWindow::OnKeyPress);
@@ -138,7 +138,7 @@ void MainWindow::Display()
 			// draw node id
 			double x = n.x + 7.0 * xRatio;
 			double y = n.y + 7.0 * yRatio;
-			glColor3ub(255, 255, 255);
+			glColor3ub(Window::FG_COLOR[0], Window::FG_COLOR[1], Window::FG_COLOR[2]);
 			glRasterPos2d(x, y);
 			glutBitmapString(Window::FONT, (const unsigned char *) std::to_string(i).c_str());
 		}

@@ -25,6 +25,9 @@ public:
 	static int POINT;
 	static int PADDING;
 	static int SIZE;
+	static unsigned char BG_COLOR[3];
+	static unsigned char FG_COLOR[3];
+	static unsigned char BD_COLOR[3];
 	static unsigned char COLOR[104][3];
 };
 
