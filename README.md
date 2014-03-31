@@ -52,6 +52,7 @@ To run the example provided with this distribution: `./demoddix example/*.xml`
 **Down** = Previous  
 **Page Up** = Increment Step  
 **Page Down** = Decrement Step  
+**Home** = Reset Zoom  
 **R** = Reset  
 **P** = Pause MscTracer
 
