@@ -5,7 +5,7 @@ runtime events of four nodes (one server and three clients). The application was
 
 ## Architecture
 
-The application consists of two processes (*pClient* and *pServer*) that exchange *mRequest* and *mReply* messages.
+The application consists of three processes (*pClient*, *pServer*, and *pHandler*) that exchange *mRequest* and *mReply* messages.
 
 ![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/architecture.png "client-server: architecture")
 
@@ -21,10 +21,16 @@ If a *mReply* is not received before *TIMEOUT* milliseconds, the *pClient* termi
 
 ### pServer
 
-The server waits for *mRequest(s)* from *pClient(s)*. Upon receiving a *mRequest*, it send a *mReply* to the *pClient* 
-if *MAX_COUNTER* is not reached; otherwise it terminates (causing also all *pClient(s)* to to the same).
+The server waits for *mRequest(s)* from *pClient(s)*. Upon receiving a *mRequest*, it creates a *pHandler* and sends a *mHandle* to it.
+This establishes a one-to-one relationship between the sending *pClient* and the created *pHandler*.
 
 ![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/server.png "client-server: pServer behaviour")
+
+###pHandler
+The handler, upon receiving a *mHandle*, increments the *counter*; this operation is guarded by the *lockCounter* semaphore.
+If the counter reaches *MAX* then *mStop* is send and execution terminates, otherwise *mReply* is sent to the client.
+
+![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/handler.png "client-server: pHandler behaviour")
 
 ## Deployment
 
