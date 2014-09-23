@@ -29,7 +29,7 @@ Two groups of events can be visualized with **demoddix**:
 
 Network events are directly displayed in **demoddix**, instead Node events are forwarded to [MscTracer](http://www.pragmadev.com/product/tracing.html) for visualization.
 
-![alt text](https://github.com/mbrumbulli/demoddix/raw/master/example/demoddix.gif "demoddix example - msctracer node 0")
+![alt text](https://github.com/mbrumbulli/demoddix1/raw/master/example/demoddix.gif "demoddix example - msctracer node 0")
 
 Trace files can be generated automatically for each system developed with **moddix**.  
 If **moddix** is not available, this distribution contains a XML Schema that can be used as a reference 
